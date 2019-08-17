@@ -1,12 +1,12 @@
 {
   "name": "nestjs-etcd-config",
-  "version": "1.1.0",
+  "version": "1.0.1",
   "description": "a nestjs etcd3 config module",
   "author": "zzy",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kyknow/nestjs-etcd3"
+    "url": "https://github.com/kyknow/nestjs-etcd-config"
   },
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.json",
