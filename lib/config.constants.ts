@@ -1,0 +1,1 @@
+export const ETCD_CONFIGS = 'ETCD_CONFIGS'
