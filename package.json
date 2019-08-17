@@ -1,6 +1,6 @@
 {
   "name": "nestjs-etcd-config",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a nestjs etcd3 config module",
   "author": "zzy",
   "license": "MIT",
