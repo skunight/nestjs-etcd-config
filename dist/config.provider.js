@@ -30,8 +30,7 @@ function createConfig(options) {
                     });
                 })));
             }
-            configs.set('listener', rxjs_1.merge(...observables));
-            return configs;
+            return { configs, listener: rxjs_1.merge(...observables), client };
         }),
         inject: [nestjs_etcd3_1.EtcdService],
     };

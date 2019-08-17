@@ -23,8 +23,7 @@ export function createConfig(options: ConfigOptions): Provider {
           })
         }))
       }
-      configs.set('listener', merge(...observables))
-      return configs
+      return { configs, listener: merge(...observables), client}
     },
     inject: [EtcdService],
   }

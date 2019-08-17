@@ -16,13 +16,14 @@ const common_1 = require("@nestjs/common");
 const config_constants_1 = require("./config.constants");
 const events_1 = require("events");
 let EtcdConfigService = class EtcdConfigService extends events_1.EventEmitter {
-    constructor(configs) {
+    constructor(configInstance) {
         super();
-        this.configs = configs;
-        const observable = this.configs.get('listener');
-        observable.subscribe((res) => {
+        this.configInstance = configInstance;
+        this.configInstance.listener.subscribe((res) => {
             try {
-                this.emit(res.key, JSON.parse(res.value));
+                const newValue = JSON.parse(res.value);
+                this.set(res.key, newValue);
+                this.emit(res.key, newValue);
             }
             catch (error) {
                 this.emit('error', error);
@@ -30,12 +31,15 @@ let EtcdConfigService = class EtcdConfigService extends events_1.EventEmitter {
         });
     }
     get(name) {
-        return this.configs.get(name);
+        return this.configInstance.configs.get(name);
+    }
+    set(name, val) {
+        this.configInstance.configs.set(name, val);
     }
 };
 EtcdConfigService = __decorate([
     common_1.Injectable(),
     __param(0, common_1.Inject(config_constants_1.ETCD_CONFIGS)),
-    __metadata("design:paramtypes", [Map])
+    __metadata("design:paramtypes", [Object])
 ], EtcdConfigService);
 exports.EtcdConfigService = EtcdConfigService;

@@ -2,18 +2,20 @@ import { Injectable, Inject } from '@nestjs/common'
 import { ETCD_CONFIGS } from './config.constants'
 import { Observable } from 'rxjs'
 import { EventEmitter } from 'events'
+import { EtcdConfigInstance } from './config.interface';
 
 @Injectable()
 export class EtcdConfigService extends EventEmitter {
   constructor(
     @Inject(ETCD_CONFIGS)
-    private readonly configs: Map<string, any>,
+    private readonly configInstance: EtcdConfigInstance,
   ) {
     super()
-    const observable = this.configs.get('listener') as Observable<any>
-    observable.subscribe((res) => {
+    this.configInstance.listener.subscribe((res) => {
       try {
-        this.emit(res.key, JSON.parse(res.value))
+        const newValue = JSON.parse(res.value)
+        this.set(res.key, newValue)
+        this.emit(res.key, newValue)
       } catch (error) {
         this.emit('error', error)
       }
@@ -21,6 +23,10 @@ export class EtcdConfigService extends EventEmitter {
   }
 
   get(name: string) {
-    return this.configs.get(name)
+    return this.configInstance.configs.get(name)
+  }
+
+  private set(name: string, val: any) {
+    this.configInstance.configs.set(name, val)
   }
 }
